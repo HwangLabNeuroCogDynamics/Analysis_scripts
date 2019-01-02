@@ -79,8 +79,7 @@ for fileN in subs.keys():
 	events = mne.find_events(raw_stimCH, verbose=True)
 	print(events)
 	raw.info['events']=events # i think that 1=EO and 2=EC
-                
-
+    if 1: # there's a random indent here so I', just going with it
         # In[33]:
 
 
@@ -156,9 +155,9 @@ for fileN in subs.keys():
 
         EC_fi=EC_f.copy()
         EC_DataCH=(EC_fi.copy()).drop_channels(extChannels)
-        EC_DataCH.plot(block=True) #pauses script while i visually inspect data and select which channels to delete
         tryAgain=1
         while tryAgain:
+				EC_DataCH.plot(block=True) #pauses script while i visually inspect data and select which channels to delete
                 bads_EC=EC_DataCH.info['bads']
                 text_msg2=raw_input('The channels you marked as bad are: '+str(bads_EC)+' \n Are you ready to interpolate? [y/n]: ')
                 if text_msg2=='y':
@@ -171,16 +170,7 @@ for fileN in subs.keys():
                         #bads=[]	
                         notDone=1
                         while notDone==1:
-                                bads_entry=raw_input('enter DONE: ')
-                                if bads_entry=='DONE':
-                                        notDone=0			
-                                else: 
-                                        print('oops, please select the electrodes you would like to interpolate and enter DONE when finished')
-                                #	try:
-                                #		int(bads_entry)
-                                #		bads.append('E'+bads_entry)
-                                #	except:
-                                #		print('oops, please enter the number of the channel \n')
+                  
                         tryAgain=1	
                 else:
                         print('invalid entry: '+text_msg2)
@@ -188,9 +178,9 @@ for fileN in subs.keys():
 
         EO_fi=EO_f.copy()
         EO_DataCH=(EO_fi.copy()).drop_channels(extChannels)
-        EO_DataCH.plot(block=True) #pauses script while i visually inspect data and select which channels to delete
         tryAgain=1
         while tryAgain:
+				EO_DataCH.plot(block=True) #pauses script while i visually inspect data and select which channels to delete
                 bads_EO=EO_DataCH.info['bads']
                 text_msg2=raw_input('The channels you marked as bad are: '+str(bads_EO)+' \n Are you ready to interpolate? [y/n] ')
                 if text_msg2=='y':
@@ -198,22 +188,7 @@ for fileN in subs.keys():
                         EO_fi=EO_fi.interpolate_bads()
                         tryAgain=0
                 elif text_msg2=='n':
-                        EO_DataCH.plot(block=True)
-                        text_msg3=raw_input("Which channels do you want to interpolate? Type 'DONE' when finished \n")	
-                        #bads=[]	
-                        notDone=1
-                        while notDone==1:
-                                bads_entry=raw_input('enter DONE: ')
-                                if bads_entry=='DONE':
-                                        notDone=0			
-                                else: 
-                                        print('oops, please select the electrodes you would like to interpolate and enter DONE when finished')
-                                #	try:
-                                #		int(bads_entry)
-                                #		bads.append('E'+bads_entry)
-                                #	except:
-                                #		print('oops, please enter the number of the channel \n')
-                        tryAgain=1	
+                        tryAgain=1
                 else:
                         print('invalid entry: '+text_msg2)
                         tryAgain=1
