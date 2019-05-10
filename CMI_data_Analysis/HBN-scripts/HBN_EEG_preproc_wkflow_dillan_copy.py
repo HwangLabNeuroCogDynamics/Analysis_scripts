@@ -16,7 +16,7 @@ import scipy.io as sio
 ROOT='/home/dcellier/RDSS/CMI_data/HBN/EEGdata/'
 dat_mat_path='%s/EEG/%s/EEG/raw/mat_format/RestingState.mat' 
 dat_csv_path='%s/EEG/%s/EEG/raw/csv_format/RestingState_event.csv'
-save_ROOT='/data/backed_up/shared/CMI_data/HBN/preproc/'
+save_ROOT='/data/backed_up/shared/CMI_data/HBN/preproc_RS/'
 
 print('\n\n ALL SUBS: \n')
 fetch_subs={}

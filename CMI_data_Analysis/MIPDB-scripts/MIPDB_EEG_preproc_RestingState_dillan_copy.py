@@ -18,7 +18,7 @@ import pickle
 
 hawkid=input('\n \nPlease input your hawkID with no spaces: ')
 ROOT = '/home/'+hawkid+'/RDSS/CMI_data/MIPDB/EEGData/'
-save_ROOT='/data/backed_up/shared/CMI_data/MIPDB/preproc/'
+save_ROOT='/data/backed_up/shared/CMI_data/MIPDB/preproc_RS/'
 subject_files=[]
 for filename in os.listdir(ROOT): #compiling the subjects downloaded from MIPDB
     if (not filename.endswith('.txt')) and (not filename=='EEG paradigm info Misc_Readme') and (not filename=='subs_without_EEG') and (not filename=='subs_w_2_RS_EEG'):
@@ -38,7 +38,7 @@ for f in subject_files:#['A00051955','A00053440']:##checking to see who is alrea
     file_open = preproc_file+thisSub+'_'+'eyes_open_epoch_'
     #print(file_closed)
     #print(file_open)
-    if len(os.listdir(preproc_file))>=10:#100 or thisSub=='A00053440' or thisSub=='A00059578':#10: #if all 10 preproc files are in the sub folder
+    if len(os.listdir(preproc_file))>=100 or thisSub=='A00053440' or thisSub=='A00059578':#10: #if all 10 preproc files are in the sub folder
     	#print(f)
     	new_subject_files.remove(f)
     	print(f)
@@ -121,13 +121,25 @@ for fileN in subs.keys():
 #real_codes=[y[2] for y in all_sub_events[fileN]]
     if (90 not in real_codes[1:]) and (trigs==real_EVs[1:]) and (len(real_EVs)==12):
         good2go=1
-        real_EVs=real_EVs[1:]
-        real_codes=real_codes[1:]
-    else:
+
+    if trigs !=real_EVs[1:]:
+		
+        print('oops! looks like the native events dont match your csv events')
+        exit()
+    
+    if 90 in real_codes[1:]:
         while 90 in real_codes: # for some subject it looks like they might have begun the RS more than once, just cutting to the last 90
             real_codes=real_codes.copy()[1:]
             real_EVs=real_EVs.copy()[1:]
-             
+
+        
+    if (len(real_EVs) !=12):
+        print('oops! Looks like you have an unusual number of events. Please inspect this subjects event file: ' +fileN)
+        exit()
+	
+    
+    
+    
     print('\n\n\n\n~~~~~~~ SEPERATING INTO EYES OPEN AND EYES CLOSED CONDITIONS ~~~~~~~~~\n\n')
     new_events=[]
     ec_label=29
@@ -135,6 +147,8 @@ for fileN in subs.keys():
     ec_labels=[]
     eo_labels=[]
     if good2go:
+        real_EVs=real_EVs[1:]
+        real_codes=real_codes[1:]
         for e in range(len(real_EVs)-1):
             thisEv=real_EVs[e]
             nextEv=real_EVs[e+1]
@@ -195,6 +209,8 @@ for fileN in subs.keys():
             	print("Oops! There is an error discovered during an inspection of this subject's complete vs incomplete EO epochs.\n")
             	print("The completed epoch with this label: "+sub+'_'+'eyes_open_epoch_'+str(n)+'-epo.fif'+" does not match the time indices of the current working event list. Please check the eo_labels for more info.")
             	print(first_samp,first_match,last_samp,last_match)
+            	print(complete_ep.events)
+            	print(events)
             	exit()
 			
             print('\n \n \n ALREADY COMPLETE: epoch no '+str(n)+'\n\n')
@@ -218,7 +234,7 @@ for fileN in subs.keys():
     
     # In[35]:
     
-    if len(allEC_eps.keys())==len(allEO_eps.keys()):
+    if (len(allEC_eps.keys())==len(allEO_eps.keys())) and len(allEO_eps.keys())>0:
         ec_KEYS=list(allEC_eps.keys())
         eo_KEYS=list(allEO_eps.keys())     
         for n in range(len(ec_KEYS)):
