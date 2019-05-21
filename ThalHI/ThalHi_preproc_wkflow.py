@@ -87,7 +87,7 @@ for sub in subject_files: # insert for loop through subject list here
 	
 	probe_event_id={'faceProbe_trig':151,'sceneProbe_trig':153}   
 	response_event_id={'subResp_trig':157,'subNonResp_trig':155}
-	cue_event_id={'IDS_trig':101,'EDS_trig':103,'Stay_trig':105}
+	cue_event_id={'IDS_trig':101,'Stay_trig':105, 'EDS_trig':103,
 	 ## triggers for emily's data: #cue_event_id={'Donut_Circle_blue_trig': 107,
  #'Donut_Circle_red_trig': 105,
  #'Donut_Polygon_blue_trig': 103,
